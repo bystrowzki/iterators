@@ -9,13 +9,13 @@ class Countries:
 
     def __iter__(self):
         self.country = json.load(self.file)
-        return self.country
+        return self
 
     def __next__(self):
         if not self.country:
             self.file.close()
             raise StopIteration
-        country_name = iter(self.country)
+        country_name = self.country.pop()['name']['common']
         return country_name
 
     def __enter__(self):

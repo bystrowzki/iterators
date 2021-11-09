@@ -1,6 +1,7 @@
 import re
 import requests
 import json
+import hashlib
 
 host = 'https://en.wikipedia.org/wiki'
 
@@ -27,9 +28,9 @@ class Countries:
         else:
             link = host+'/'+country_name
         res = country_name+' - '+link
-        with open('Countries List.txt', 'a', encoding='UTF-8') as file:
+        with open('Countries List.txt', 'a+', encoding='UTF-8') as file:
             file.write(str(res)+'\n')
-        return res
+        return country_name
 
     def __enter__(self):
         return self
@@ -40,5 +41,9 @@ class Countries:
 
 with Countries('countries.json') as country_iter:
     for name in country_iter:
-        print(name)
+        pass
+        with open('Countries List.txt', 'r', encoding='UTF-8') as file:
+            for line in file:
+                hash_object = hashlib.md5(line.encode())
+                print(hash_object.hexdigest())
 

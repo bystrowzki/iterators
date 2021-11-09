@@ -1,8 +1,13 @@
+import re
 import requests
 import json
 
+host = 'https://en.wikipedia.org/wiki'
+
 
 class Countries:
+
+
 
     def __init__(self, path):
         self.file = open(path)
@@ -16,7 +21,15 @@ class Countries:
             self.file.close()
             raise StopIteration
         country_name = self.country.pop()['name']['common']
-        return country_name
+        if ' ' in country_name:
+            name = country_name.replace(' ', '_')
+            link = host+'/'+name
+        else:
+            link = host+'/'+country_name
+        res = country_name+' - '+link
+        with open('Countries List.txt', 'a', encoding='UTF-8') as file:
+            file.write(str(res)+'\n')
+        return res
 
     def __enter__(self):
         return self
@@ -28,3 +41,4 @@ class Countries:
 with Countries('countries.json') as country_iter:
     for name in country_iter:
         print(name)
+

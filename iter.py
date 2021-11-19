@@ -6,9 +6,13 @@ import hashlib
 host = 'https://en.wikipedia.org/wiki'
 
 
+def gen(path):
+    with open(path) as file:
+        for line in file:
+            hash_object = hashlib.md5(line.encode())
+            yield print(hash_object.hexdigest())
+
 class Countries:
-
-
 
     def __init__(self, path):
         self.file = open(path)
@@ -42,8 +46,6 @@ class Countries:
 with Countries('countries.json') as country_iter:
     for name in country_iter:
         pass
-        with open('Countries List.txt', 'r', encoding='UTF-8') as file:
-            for line in file:
-                hash_object = hashlib.md5(line.encode())
-                print(hash_object.hexdigest())
+        for item in gen('Countries List.txt'):
+            pass
 
